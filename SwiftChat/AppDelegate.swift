@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("yu8oMI7W0U1nChLcklTwZnDw2m09k5Vcbg8K2lJe",
             clientKey: "S2N1q9JmCnEs1xVK76WHnf3DFSq11BTLdRnslui9")
         
+        // hide status bar
+        application.setStatusBarHidden(true, withAnimation: UIStatusBarAnimation(rawValue: 1)!)
+        
         return true
     }
 

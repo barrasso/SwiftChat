@@ -20,7 +20,7 @@ class UserTableViewController: UITableViewController {
     {
         super.viewDidLoad()
         
-        // get users, not current
+        // query for other users
         var query = PFUser.query()
         query.whereKey("username", notEqualTo: PFUser.currentUser().username)
         
