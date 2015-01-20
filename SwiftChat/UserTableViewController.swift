@@ -10,17 +10,32 @@ import UIKit
 
 class UserTableViewController: UITableViewController {
 
+    // user arrays
+    var userArray = [String]()
+    var sortedUserArray = [String]()
+    
     // MARK: - View Initialization
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        // get users, not current
+        var query = PFUser.query()
+        query.whereKey("username", notEqualTo: PFUser.currentUser().username)
+        
+        // synchronous query
+        var users = query.findObjects()
+        
+        for user in users {
+            // add usernames to user array
+            userArray.append(user.username)
+        }
+        
+        // sort user array alphabetically
+        sortedUserArray = userArray.sorted({
+            $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending
+        })
     }
 
     override func didReceiveMemoryWarning()
@@ -31,27 +46,27 @@ class UserTableViewController: UITableViewController {
 
     // MARK: - Table View Data Source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    {
         // Return the number of sections.
-        return 0
+        return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
         // Return the number of rows in the section.
-        return 0
+        return userArray.count
     }
 
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    {
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
 
-        // Configure the cell...
-
+        // set cell labels
+        cell.textLabel?.text = sortedUserArray[indexPath.row]
+        
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
