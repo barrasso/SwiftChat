@@ -29,6 +29,7 @@
 		040BA0001A6EECE300A5C3F1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B9FFF1A6EECE300A5C3F1 /* AudioToolbox.framework */; };
 		040BA0021A6EECEB00A5C3F1 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 040BA0011A6EECEB00A5C3F1 /* libz.dylib */; };
 		040BA0041A6EECFA00A5C3F1 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 040BA0031A6EECFA00A5C3F1 /* libsqlite3.dylib */; };
+		040BA00A1A6EFE2600A5C3F1 /* UserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040BA0091A6EFE2600A5C3F1 /* UserTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		040BA0011A6EECEB00A5C3F1 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		040BA0031A6EECFA00A5C3F1 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		040BA0061A6EED8F00A5C3F1 /* SwiftChat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftChat-Bridging-Header.h"; sourceTree = "<group>"; };
+		040BA0091A6EFE2600A5C3F1 /* UserTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			children = (
 				040B9FC41A6EEB3500A5C3F1 /* AppDelegate.swift */,
 				040B9FC61A6EEB3500A5C3F1 /* ViewController.swift */,
+				040BA0091A6EFE2600A5C3F1 /* UserTableViewController.swift */,
 				040B9FC81A6EEB3500A5C3F1 /* Main.storyboard */,
 				040B9FCB1A6EEB3500A5C3F1 /* Images.xcassets */,
 				040B9FCD1A6EEB3500A5C3F1 /* LaunchScreen.xib */,
@@ -295,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				040B9FC71A6EEB3500A5C3F1 /* ViewController.swift in Sources */,
+				040BA00A1A6EFE2600A5C3F1 /* UserTableViewController.swift in Sources */,
 				040B9FC51A6EEB3500A5C3F1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
