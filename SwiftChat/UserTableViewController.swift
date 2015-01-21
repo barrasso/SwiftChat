@@ -8,11 +8,14 @@
 
 import UIKit
 
-class UserTableViewController: UITableViewController {
+class UserTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     // user arrays
     var userArray = [String]()
     var sortedUserArray = [String]()
+    
+    // selected recipient
+    var selectedRecipient = 0;
     
     // MARK: - View Initialization
     
@@ -67,50 +70,76 @@ class UserTableViewController: UITableViewController {
         
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        // set the recipient number
+        selectedRecipient = indexPath.row
+        
+        // call image choosing method
+        chooseImage(self)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    // MARK: Image Actions
+    
+    @IBAction func chooseImage(sender: AnyObject)
+    {
+        // init picker controller
+        var image = UIImagePickerController()
+        
+        // set delegate
+        image.delegate = self
+        
+        // access photo library
+        image.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        
+        // allows user to edit picture
+        image.allowsEditing = false
+        
+        // present the picker controller
+        self.presentViewController(image, animated: true, completion: nil)
     }
-    */
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+    // MARK: Image Picker Delegate Functions
+    
+    // user did finishing picking an image
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!)
+    {
+        NSLog("Picked Image")
+        
+        // close image picker
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        // upload to parse
+        var imageToSend = PFObject(className:"Image")
+        imageToSend["photo"] = PFFile(name: "photo.jpg", data: UIImageJPEGRepresentation(image, 0.5))
+        imageToSend["senderUsername"] = PFUser.currentUser().username
+        imageToSend["recipientUsername"] = sortedUserArray[selectedRecipient]
+        imageToSend.saveInBackgroundWithBlock {
+            (success: Bool!, error: NSError!) -> Void in
+            
+            if success == false {
+                // failed sending image
+                NSLog("Error: %@", error)
+                self.displayAlert("Could Not Send Image", error: "Please try again later.")
+            } else {
+                // successfully sent
+                self.displayAlert("Image Sent", error: "Your image has been sent successfully!")
+            }
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
+    
+    // MARK: Alert Functions
+    
+    func displayAlert(title:String, error:String)
+    {
+        // display error alert
+        var errortAlert = UIAlertController(title: title, message: error, preferredStyle: UIAlertControllerStyle.Alert)
+        errortAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { action in
+            // close popup and do nothing
+        }))
+        
+        self.presentViewController(errortAlert, animated: true, completion: nil)
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
