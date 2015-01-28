@@ -115,10 +115,41 @@ class UserTableViewController: UITableViewController, UIImagePickerControllerDel
                 imageView.loadInBackground({ (photo, error) -> Void in
                     if error == nil {
                         
+                        var senderUsername = ""
+    
+                        if image["senderUsername"] != nil {
+                            senderUsername = image["senderUsername"]! as NSString
+                        } else {
+                            senderUsername = "Unknown"
+                        }
+                        
+                        // create new message alert
+                        var alert = UIAlertController(title: "New Message", message: "Message from \(senderUsername)", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: {
+                            (action) -> Void in
+                        
+                        // setup bg view
+                        var bgView:UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
+                        bgView.backgroundColor = UIColor.blackColor()
+                        bgView.alpha = 0.8
+                        bgView.tag = 1;
+                        self.view.addSubview(bgView)
+                        
+                        
                         // create image view
                         var displayedImage:UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
-                        displayedImage.image = photo;
-                    self.view.addSubview(displayedImage)
+                        displayedImage.image = photo
+                        displayedImage.contentMode = UIViewContentMode.ScaleAspectFit
+                        displayedImage.tag = 1;
+                        self.view.addSubview(displayedImage)
+                            
+                        image.delete()
+                        
+                        self.timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("hideMessage"), userInfo: nil, repeats: false)
+                      
+                        }))
+                        
+                        self.presentViewController(alert, animated: true, completion: nil)
                         
                     } else {
                         NSLog("Error %@", error)
@@ -129,7 +160,18 @@ class UserTableViewController: UITableViewController, UIImagePickerControllerDel
                 done = true
             }
         }
-        
+    }
+    
+    func hideMessage()
+    {
+        // remove all image sub views
+        for subview in self.view.subviews {
+            
+            // look for tag of 1
+            if subview.tag == 1 {
+                subview.removeFromSuperview()
+            }
+        }
     }
     
     // MARK: Image Actions
@@ -194,6 +236,7 @@ class UserTableViewController: UITableViewController, UIImagePickerControllerDel
         self.presentViewController(errortAlert, animated: true, completion: nil)
     }
 
+    // MARK: Navigation Functions
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "logoutSegue") {
