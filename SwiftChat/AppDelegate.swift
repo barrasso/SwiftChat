@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             clientKey: "S2N1q9JmCnEs1xVK76WHnf3DFSq11BTLdRnslui9")
         
         // hide status bar
-        application.setStatusBarHidden(true, withAnimation: UIStatusBarAnimation(rawValue: 1)!)
+        application.setStatusBarHidden(true, withAnimation: UIStatusBarAnimation(rawValue: 0)!)
         
         return true
     }

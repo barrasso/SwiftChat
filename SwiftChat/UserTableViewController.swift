@@ -33,6 +33,9 @@ class UserTableViewController: UITableViewController, UIImagePickerControllerDel
         for user in users {
             // add usernames to user array
             userArray.append(user.username)
+            
+            // update table view
+            tableView.reloadData()
         }
         
         // sort user array alphabetically
@@ -142,4 +145,10 @@ class UserTableViewController: UITableViewController, UIImagePickerControllerDel
         self.presentViewController(errortAlert, animated: true, completion: nil)
     }
 
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "logoutSegue") {
+            PFUser.logOut()
+        }
+    }
 }

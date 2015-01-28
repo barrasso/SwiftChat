@@ -94,7 +94,13 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
-                                <navigationItem title="SwiftChat Users" id="i30-JS-biG"/>
+                                <navigationItem title="SwiftChat Users" id="i30-JS-biG">
+                                    <barButtonItem key="leftBarButtonItem" title="Logout" id="Cu3-4H-oE9">
+                                        <connections>
+                                            <segue destination="vXZ-lx-hvc" kind="show" identifier="logoutSegue" id="wtm-da-qit"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
                             </items>
                         </navigationBar>
                         <prototypes>
