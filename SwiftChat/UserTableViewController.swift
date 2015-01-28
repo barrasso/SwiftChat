@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ParseUI
 
 class UserTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -17,11 +18,17 @@ class UserTableViewController: UITableViewController, UIImagePickerControllerDel
     // selected recipient
     var selectedRecipient = 0;
     
+    // timer
+    var timer = NSTimer()
+    
     // MARK: - View Initialization
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        // start timer
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("checkForMessage"), userInfo: nil, repeats: true)
         
         // query for other users
         var query = PFUser.query()
@@ -81,6 +88,48 @@ class UserTableViewController: UITableViewController, UIImagePickerControllerDel
         
         // call image choosing method
         chooseImage(self)
+    }
+    
+    
+    // MARK: Timer Functions
+    
+    func checkForMessage()
+    {
+        println("checking,,,,")
+        
+        // query for images
+        var query = PFQuery(className: "Image")
+        query.whereKey("recipientUsername", equalTo: PFUser.currentUser().username)
+        var images = query.findObjects()
+        
+        // init flag
+        var done = false
+        
+        for image in images {
+            
+            if done == false {
+                
+                // download the image
+                var imageView:PFImageView = PFImageView()
+                imageView.file = image["photo"] as PFFile
+                imageView.loadInBackground({ (photo, error) -> Void in
+                    if error == nil {
+                        
+                        // create image view
+                        var displayedImage:UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
+                        displayedImage.image = photo;
+                    self.view.addSubview(displayedImage)
+                        
+                    } else {
+                        NSLog("Error %@", error)
+                    }
+                    
+                })
+                
+                done = true
+            }
+        }
+        
     }
     
     // MARK: Image Actions
